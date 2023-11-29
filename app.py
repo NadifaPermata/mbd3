@@ -5,7 +5,7 @@ list_petugas = ['', 'Nuryanto', 'Angel', 'Siola', 'Riki', 'Karan']
 list_symptom = ['', 'pertalite', 'pertamax', 'pertamax turbo', 'solar', 'pertamina dex']
 
 conn = st.connection("postgresql", type="sql", 
-                     url="postgresql://NadifaPermata:7CIXwskWNRy0@ep-falling-cherry-06864175.us-east-2.aws.neon.tech/web")
+                     url="postgresql://NadifaPermata:7CIXwskWNRy0@ep-falling-cherry-06864175.us-east-2.aws.neon.tech/mbd3")
 with conn.session as session:
     query = text('CREATE TABLE IF NOT EXISTS selling (id serial, nama_petugas varchar, plat_nomor char(25), jenis_kendaraan varchar, \
                                                        symptom text, banyak_pembelian varchar, tanggal date);')
