@@ -1,39 +1,38 @@
 import streamlit as st
 from sqlalchemy import text
 
-list_doctor = ['', 'dr. Nurita', 'dr. Yogi', 'dr. Wibowo', 'dr. Ulama', 'dr. Ping']
-list_symptom = ['', 'male', 'female']
+list_petugas = ['', 'Nuryanto', 'Angel', 'Siola', 'Riki', 'Karan']
+list_symptom = ['', 'pertalite', 'pertamax', 'pertamax turbo', 'solar', 'pertamina dex']
 
 conn = st.connection("postgresql", type="sql", 
                      url="postgresql://NadifaPermata:7CIXwskWNRy0@ep-falling-cherry-06864175.us-east-2.aws.neon.tech/web")
 with conn.session as session:
-    query = text('CREATE TABLE IF NOT EXISTS SCHEDULE (id serial, doctor_name varchar, patient_name varchar, gender char(25), \
-                                                       symptom text, handphone varchar, address text, tanggal date);')
+    query = text('CREATE TABLE IF NOT EXISTS SELLING (id serial, nama_petugas varchar, plat_nomor char(25), jenis_kendaraan varchar, \
+                                                       symptom text, banyak_pembelian varchar, tanggal date);')
     session.execute(query)
 
-st.header('SIMPLE HOSPITAL DATA MANAGEMENT SYS NEW')
+st.header('SPBU DATA MANAGEMENT')
 page = st.sidebar.selectbox("Pilih Menu", ["View Data","Edit Data"])
 
 if page == "View Data":
-    data = conn.query('SELECT * FROM schedule ORDER By id;', ttl="0").set_index('id')
+    data = conn.query('SELECT * FROM selling ORDER By id;', ttl="0").set_index('id')
     st.dataframe(data)
 
 if page == "Edit Data":
     if st.button('Tambah Data'):
         with conn.session as session:
-            query = text('INSERT INTO schedule (doctor_name, patient_name, gender, symptom, handphone, address, waktu, tanggal) \
+            query = text('INSERT INTO selling (nama_petugas, plat_nomor, jenis_kendaraan, symptom, banyak_pembelian, waktu, tanggal) \
                           VALUES (:1, :2, :3, :4, :5, :6, :7, :8);')
             session.execute(query, {'1':'', '2':'', '3':'', '4':'[]', '5':'', '6':'', '7':None, '8':None})
             session.commit()
 
-    data = conn.query('SELECT * FROM schedule ORDER By id;', ttl="0")
+    data = conn.query('SELECT * FROM selling ORDER By id;', ttl="0")
     for _, result in data.iterrows():        
         id = result['id']
-        doctor_name_lama = result["doctor_name"]
-        patient_name_lama = result["patient_name"]
-        gender_lama = result["gender"]
+        nama_petugas_lama = result["nama_petugas"]
+        plat_nomor_lama = result["plat_nomor"]
         symptom_lama = result["symptom"]
-        handphone_lama = result["handphone"]
+        banyak_pembelianlama = result["handphone"]
         address_lama = result["address"]
         waktu_lama = result["waktu"]
         tanggal_lama = result["tanggal"]
